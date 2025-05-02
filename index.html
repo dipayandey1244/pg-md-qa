@@ -1,0 +1,36 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Random PG MD Q&A</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; max-width: 800px; margin: auto; background-color: #f9f9f9; }
+        .qa { margin-bottom: 20px; background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .question { font-weight: bold; margin-bottom: 5px; }
+        .answer { color: #333; }
+        button { padding: 10px 15px; margin-top: 20px; cursor: pointer; background: #007BFF; color: white; border: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Random PG MD Questions & Answers</h1>
+    <div id="qa-container">Loading...</div>
+    <button onclick="loadQuestions()">Shuffle 5 Q&As</button>
+
+    <script>
+        async function loadQuestions() {
+            const response = await fetch('pg_md_questions.json');
+            const qaPairs = await response.json();
+            const shuffled = qaPairs.sort(() => 0.5 - Math.random()).slice(0, 5);
+            const container = document.getElementById("qa-container");
+            container.innerHTML = shuffled.map((qa, i) => `
+                <div class="qa">
+                    <div class="question">Q${i + 1}. ${qa.question}</div>
+                    <div class="answer"><b>Ans:</b> ${qa.answer}</div>
+                </div>
+            `).join('');
+        }
+
+        loadQuestions();
+    </script>
+</body>
+</html>
